@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Video Player</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background-color: #0b0b0b;
+      color: #fff;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 16px;
+    }
+    .player-box {
+      position: relative;
+      width: 100%;
+      max-width: 720px;
+      aspect-ratio: 16 / 9;
+      background: linear-gradient(135deg, #1f1f1f 0%, #0d0d0d 100%);
+      border-radius: 10px;
+      overflow: hidden;
+      cursor: pointer;
+      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.85);
+      -webkit-tap-highlight-color: transparent;
+    }
+    .thumbnail {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: blur(14px) brightness(0.65);
+      transform: scale(1.12);
+      display: block;
+    }
+    .play-btn {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 74px;
+      height: 74px;
+      background: rgba(255, 0, 0, 0.88);
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+      transition: transform 0.15s ease;
+    }
+    .player-box:active .play-btn,
+    .player-box:hover .play-btn {
+      transform: translate(-50%, -50%) scale(1.08);
+    }
+    .play-icon {
+      width: 0;
+      height: 0;
+      border-left: 24px solid #fff;
+      border-top: 14px solid transparent;
+      border-bottom: 14px solid transparent;
+      margin-left: 6px;
+    }
+    .hd-badge {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: rgba(0, 0, 0, 0.7);
+      padding: 3px 7px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+    .controls {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      padding: 14px 16px;
+      background: linear-gradient(transparent, rgba(0, 0, 0, 0.9));
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 12px;
+      color: #ddd;
+    }
+    .progress-bar {
+      flex: 1;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.3);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      width: 12%;
+      height: 100%;
+      background: #ff0000;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="player-box" onclick="bukaIklan()">
+    <img src="thumb.png" alt="" class="thumbnail" onerror="if(!this.dataset.retry){this.dataset.retry=1;this.src='thumb.jpg';}else{this.style.display='none';}">
+    <div class="hd-badge">HD</div>
+
+    <div class="play-btn">
+      <div class="play-icon"></div>
+    </div>
+
+    <div class="controls">
+      <span>00:00</span>
+      <div class="progress-bar"><div class="progress-fill"></div></div>
+      <span>08:42</span>
+    </div>
+  </div>
+
+  <script>
+    const daftarIklan = [
+      "https://asiafilm.org/4/06dfb1534165ad6fd0991a6e5ac24a5d",
+      "https://uplcm.com/4/12319496",
+      "https://asiafilm.org/4/a0f401ef8b6c6f104387a2431124493d",
+      "https://uplcm.com/4/12319502"
+    ];
+
+    function bukaIklan() {
+      let urutan = parseInt(localStorage.getItem("rotator_index") || "0", 10);
+      if (urutan >= daftarIklan.length) {
+        urutan = 0;
+      }
+
+      const targetUrl = daftarIklan[urutan];
+      localStorage.setItem("rotator_index", (urutan + 1) % daftarIklan.length);
+
+      window.location.href = targetUrl;
+    }
+  </script>
+
+</body>
+</html>
